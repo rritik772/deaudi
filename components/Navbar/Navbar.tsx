@@ -9,7 +9,7 @@ export default function Navbar() {
     const [dropdownCat, setDropdownCat] = useState<SearchCategory>(SearchCategory.Tracks);
 
     return (
-        <nav className="navbar navbar-expand-lg fixed-top bg-light m-3 shadow rounded-2">
+        <nav className="navbar navbar-expand-lg sticky-top bg-light m-3 shadow rounded-2">
             <div className="container-fluid">
 
                 <a className="navbar-brand rig fs-3" href="#">DeAudi</a>

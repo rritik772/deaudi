@@ -1,18 +1,15 @@
-import { useEffect } from 'react';
-
-import 'bootstrap/dist/css/bootstrap.min.css';
-import '../styles/globals.css'
-
 import type { AppProps } from 'next/app'
 
+import '../styles/globals.css'
+
+import Navbar from '../components/Navbar/Navbar';
+
 export default function App({ Component, pageProps }: AppProps) {
-
-  useEffect(() => {
-
-    // @ts-ignore
-    import("bootstrap/dist/js/bootstrap");
-
-  }, []);
-
-  return <Component {...pageProps} />
+  return (
+    <div>
+      <Navbar />
+      <div className="mb-2" />
+      <Component {...pageProps} />
+    </div>
+  )
 }

@@ -26,9 +26,9 @@ export default function Tracks() {
   }, [])
 
   return (
-    <div className="container">
+    <div className="container mx-auto">
       <div className="mb-5" />
-      <span className="tw-text-4xl robo tw-font-bold">Tracks</span>
+      <span className="text-4xl robo font-semibold">Tracks</span>
       <div className="my-3" />
       {
         data &&

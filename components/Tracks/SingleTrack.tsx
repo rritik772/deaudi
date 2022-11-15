@@ -4,6 +4,7 @@ export interface SingleTracksProps {
   name: string
   trackId: number
   length: number
+  imgUrl: string
   description: string
   timestamp: number
   addedByName: string
@@ -12,7 +13,7 @@ export interface SingleTracksProps {
   IPFSHash: string
 }
 
-const SingleTracks: FC<SingleTracksProps> = ({ name, trackId, length, description, timestamp, addedByName, album, artists, IPFSHash }) => {
+const SingleTracks: FC<SingleTracksProps> = ({ name, trackId, length, imgUrl, description, timestamp, addedByName, album, artists, IPFSHash }) => {
 
   const [infoToggle, setInfoToggle] = useState<boolean>(false);
 
@@ -21,64 +22,52 @@ const SingleTracks: FC<SingleTracksProps> = ({ name, trackId, length, descriptio
     return (s.length <= l) ? s : `${ns}...`;
   }
 
+
   return (
-    <div className="hover:(shadow) duration-300 p-2 border-2 rounded-lg bg-gray-50 mb-5">
-      <div className="border-b-2 p-2">
-        <span className="text-gray-500 robo pr-3">{trackId} </span>
-        <span className='robo text-gray-700'>
-          @{artists[0]}
-          {
-            (artists.length > 1) ? ' and ' + artists.length + ' others' : ''
-          }
-        </span>
-      </div>
+    <div className="mb-3 border p-2 rounded-lg hover:shadow-md duration-300">
+      <div className="p-4 flex justify-between rounded-lg robo items-center">
 
-      <div className="mt-2 flex gap-3 p-2 justify-between items-center">
-        <h4 className="flex gap-3 robo text-xl items-end">
-          <button className="hover:(text-purple-500) duration-300 me-2 text-2xl">▶️</button>
-          {getTrimmedString(name, 25)}
-        </h4>
+        <div className="flex gap-4 items-center">
+          <span className="text-gray-500">{trackId.toString().length < 2 ? `0${trackId}` : trackId}</span>
+          <img src={imgUrl} className="cursor-pointer rounded-full w-15 h-15" style={{ backgroundImage: `url(${imgUrl})` }} />
 
-        <div className="flex items-center gap-4">
-
-          <span className="mont">
-            {new Date(length * 1000).toISOString().substring(14, 19)}
-          </span>
-          <span className="col-1 mont">{album}</span>
-
-          <div className="d-grid col-1">
-            <button
-              className="hover:(border-gray-500 text-gray-800 shadow-lg) text-gray-500 duration-300 shadow-sm rounded-lg border-2 px-2 py-1"
-              type="button"
-              onClick={() => setInfoToggle(!infoToggle)}
-            >
-              &#10225;
-            </button>
+          <div className="flex flex-col">
+            <span className='text-xl'>{getTrimmedString(name, 20)}</span>
+            <span className='text-sm mont text-bold text-gray-500'>{getTrimmedString(album, 10)}</span>
           </div>
         </div>
 
+        <div className="flex items-center gap-5">
+          <span>{new Date(length * 1000).toISOString().substring(14, 19)}</span>
+          <span className="text-3xl hover:text-red-500 select-none cursor-pointer">&#10084;</span>
+          <span className="cursor-pointer py-2 px-3 border hover:(border-purple-400 shadow-md text-purple-500) duration-300 rounded-lg select-none">&#9654;</span>
+          <span
+            onClick={() => setInfoToggle(!infoToggle)}
+            className="cursor-pointer py-2 px-3 border hover:(border-yellow-400 shadow-md text-yellow-500) duration-300 rounded-lg select-none"
+          >
+            &bull;&bull;&bull;
+          </span>
+        </div>
       </div>
 
+      <div className={`transition-all ease-out duration-300 transform ${infoToggle ? 'p-5 border-t' : 'scale-y-0 opacity-0 h-0'} `}>
 
-      <div className={`border-b-2 my-2 ${(!infoToggle) && 'hidden'}`} />
-      <div className={`pl-10 py-2 ${(!infoToggle) ? 'hidden' : 'flex flex-col gap-3'}`} id={`info-${timestamp}-col`}>
+        <div className="mb-2">
+          <span className="robo">Description</span>
+          <p className="ml-3 text-sm mont">{description}</p>
+        </div>
+
+        <div className="mb-2">
+          <span className="robo">Added By</span>
+          <p className="ml-3 mont text-sm">{addedByName}</p>
+        </div>
 
         <div className="">
-          <span className="robo text-lg">Description</span>
-          <p className="ml-3 mt-1 mont">{description}</p>
-        </div>
-
-        <div>
-          <span className="robo text-lg">Added By</span>
-          <p className="ml-3 mt-1 mont">{addedByName}</p>
-        </div>
-
-        <div>
-          <span className="robo text-lg">Artists</span><br />
+          <span className="robo">Artists</span><br />
           {
-            artists.map(artist => (
+            artists.map((artist, key) => (
               <>
-                <span className="ml-3 mt-1 mont">@{artist}</span>
+                <span key={key} className="ml-3 text-sm mont">@{artist}</span>
                 <br />
               </>
             ))
@@ -86,7 +75,6 @@ const SingleTracks: FC<SingleTracksProps> = ({ name, trackId, length, descriptio
         </div>
 
       </div>
-
     </div>
   )
 }

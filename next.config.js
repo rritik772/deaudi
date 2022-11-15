@@ -8,6 +8,11 @@ const nextConfig = {
     config.plugins.push(new WindiCSSWebpackPlugin())
     return config
   },
+  env: {
+    NFT_STORAGE_KEY: process.env.NFT_STORAGE_KEY,
+    CONTRACTADDRESS: process.env.CONTRACTADDRESS,
+    CONTRACTABI: process.env.CONTRACTABI
+  }
 }
 
 module.exports = nextConfig

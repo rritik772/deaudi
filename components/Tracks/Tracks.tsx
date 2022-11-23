@@ -1,8 +1,13 @@
 import { useEffect, useState } from "react";
 import { faker } from '@faker-js/faker';
 import SingleTracks, { SingleTracksProps } from "./SingleTrack";
+import TrackModal from "../../modals/Tracks";
 
-export default function Tracks() {
+interface TracksProps {
+  tracks: TrackModal[]
+}
+
+export default function Tracks({ tracks }: TracksProps) {
 
   const [data, setData] = useState<SingleTracksProps[]>();
 
@@ -32,20 +37,11 @@ export default function Tracks() {
       <span className="text-3xl rig tracking-widest">Tracks</span>
       <div className="my-3" />
       {
-        data &&
-        Array.from(data).map((track, key) => (
+        tracks && tracks.length > 0 &&
+        Array.from(tracks).map((track, key) => (
           <SingleTracks
             key={key}
-            name={track.name}
-            trackId={track.trackId}
-            length={track.length}
-            imgUrl={track.imgUrl}
-            description={track.description}
-            timestamp={track.timestamp}
-            addedByName={track.addedByName}
-            album={track.album}
-            artists={track.artists}
-            IPFSHash={track.IPFSHash}
+            track={track}
           />
         ))
       }

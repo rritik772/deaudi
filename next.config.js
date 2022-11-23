@@ -1,6 +1,7 @@
+/** @type {import('next').NextConfig} */
+
 const WindiCSSWebpackPlugin = require('windicss-webpack-plugin')
 
-/** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
@@ -10,8 +11,8 @@ const nextConfig = {
   },
   env: {
     NFT_STORAGE_KEY: process.env.NFT_STORAGE_KEY,
-    CONTRACTADDRESS: process.env.CONTRACTADDRESS,
-    CONTRACTABI: process.env.CONTRACTABI
+    TRACKSCONTRACTADDRESS: process.env.TRACKSCONTRACTADDRESS,
+    PROFILECONTRACTADDRESS: process.env.PROFILECONTRACTADDRESS,
   }
 }
 

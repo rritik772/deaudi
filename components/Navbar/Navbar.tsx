@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useContractContext } from "../../context/BlockchainContext";
 
 enum SearchCategory {
@@ -7,8 +7,10 @@ enum SearchCategory {
 }
 
 export default function Navbar() {
+    const searchInputRef = useRef(null);
+
     const [dropdownCat, setDropdownCat] = useState<SearchCategory>(SearchCategory.Tracks);
-    const { connectWallet, isWalletConnected } = useContractContext();
+    const { connectWallet, isWalletConnected, getTracks, getTotalTracks } = useContractContext();
 
     const handleToggleDropdown = () => {
         switch (dropdownCat) {
@@ -19,6 +21,15 @@ export default function Navbar() {
                 setDropdownCat(SearchCategory.Tracks);
                 break;
         }
+    }
+
+    async function handleSearch(e) {
+        e.preventDefault();
+
+        if (!searchInputRef || !window) return;
+
+        const tracks = await getTracks(window.ethereum, searchInputRef.current?.value);
+
     }
 
     return (
@@ -46,11 +57,11 @@ export default function Navbar() {
 
 
                 <form className="robo flex items-center gap-4" role="search">
-                    <input className="input hover:w-64 focus:w-64 w-44" type="search" placeholder="Search..." aria-label="Search" />
+                    <input className="input hover:w-64 focus:w-64 w-44" type="search" placeholder="Search..." aria-label="Search" ref={searchInputRef} />
 
                     <button type="button" className="hover:(shadow-lg border-gray-400) px-4 py-2  border-1 rounded-lg duration-300" onClick={handleToggleDropdown}>{dropdownCat}</button>
 
-                    <button className="submit-button" type="button">&#128269;</button>
+                    <button className="submit-button" type="button" onClick={(e) => handleSearch(e)}>&#128269;</button>
                 </form>
 
             </div>

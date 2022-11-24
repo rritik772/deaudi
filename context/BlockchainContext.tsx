@@ -28,7 +28,7 @@ export const ContractProvider = ({ children }: { children: ReactNode }) => {
       const accounts = await ethereum.request({ method: "eth_requestAccounts" });
       setAccount(accounts[0]);
     } catch (err) {
-      console.log(err);
+      console.error(err);
       throw new Error("No ethereum object");
     }
   }
@@ -43,10 +43,10 @@ export const ContractProvider = ({ children }: { children: ReactNode }) => {
         setAccount(accounts[0]);
         setIsWalletConnected(true);
       } else {
-        console.log("No accounts found.");
+        console.info("No accounts found.");
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   }
 

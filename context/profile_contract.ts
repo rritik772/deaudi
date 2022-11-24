@@ -9,7 +9,7 @@ const createProfileContract = (ethereum: any): ethers.Contract => {
 
   const trackContract = new ethers.Contract(
     // process.env.PROFILECONTRACTADDRESS || '',
-    "0x2279B7A0a67DB372996a5FaB50D91eAA73d2eBe6",
+    "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
     ProfileABI,
     signer
   );
@@ -29,7 +29,7 @@ export async function createProfile(ethereum: any, profile: ProfileModal): Promi
 
     return true;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return false;
   }
 }
@@ -41,7 +41,7 @@ export async function getProfile(ethereum: any): Promise<ProfileModal> {
 
     return profile;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return ProfileDefault;
   }
 }
@@ -53,7 +53,7 @@ export async function createNewTrack(ethereum: any): Promise<boolean> {
 
     return true;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return false;
   }
 }
@@ -65,7 +65,7 @@ export async function changeDescription(ethereum: any, desc: string): Promise<bo
 
     return true;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return false;
   }
 }

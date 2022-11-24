@@ -9,15 +9,14 @@ declare const window: any;
 export default function Home() {
   const [tracks, setTracks] = useState<TrackModal[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
-  const [etherum, setEtherum] = useState<any>(undefined);
+  const [ethereum, setEthereum] = useState<any>(undefined);
 
   const { getAllTracks } = useContractContext();
 
   const getSongs = async () => {
     setLoading(true);
 
-    const _tracks = await getAllTracks!(etherum);
-    console.log(tracks, 'tracks')
+    const _tracks = await getAllTracks!(ethereum);
     if (_tracks[0] === TrackModalDefault) {
       toast.info("No tracks found");
       return;
@@ -28,14 +27,13 @@ export default function Home() {
   }
 
   useEffect(() => {
-    setEtherum(window.etherum)
+    setEthereum(window.ethereum)
   }, [])
 
   useEffect(() => {
-    console.log(etherum)
-    if (etherum !== undefined)
+    if (ethereum !== undefined)
       getSongs();
-  }, [etherum])
+  }, [ethereum])
 
   return (
     <div>

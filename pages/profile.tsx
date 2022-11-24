@@ -19,7 +19,7 @@ export default function profile() {
 
     let _tracks = await getTracksAddedByArtist!(ethereum);
 
-    if (tracks[0] == TrackModalDefault) {
+    if (_tracks[0] === TrackModalDefault) {
       toast.info("No tracks found");
       return;
     }

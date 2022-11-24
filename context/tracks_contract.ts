@@ -9,7 +9,7 @@ const createTrackContract = (ethereum: any): ethers.Contract => {
 
   const trackContract = new ethers.Contract(
     // process.env.TRACKSCONTRACTADDRESS || '',
-    "0xa513E6E4b8f2a923D98304ec87F64353C4D5C853",
+    "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
     TracksABI,
     signer
   );
@@ -19,7 +19,6 @@ const createTrackContract = (ethereum: any): ethers.Contract => {
 
 export async function addTrack(ethereum: any, modal: TrackModal): Promise<boolean> {
   try {
-
     const contract = createTrackContract(ethereum);
     await contract.addTrack(
       modal.name,
@@ -34,7 +33,7 @@ export async function addTrack(ethereum: any, modal: TrackModal): Promise<boolea
 
     return true;
   } catch (err) {
-    console.log(err);
+    console.error(err);
     return false;
   }
 }
@@ -72,7 +71,6 @@ export async function getAllTracks(ethereum: any): Promise<TrackModal[]> {
   try {
     const contract = createTrackContract(ethereum);
     const tracks = await contract.getAllTracks();
-    console.log(tracks);
 
     const s_tracks: TrackModal[] = tracks.map((track: any) => ({
       name: track.name,
@@ -102,7 +100,6 @@ export async function getArtistTracks(ethereum: any, name: string): Promise<Trac
   try {
     const contract = createTrackContract(ethereum);
     const tracks = await contract.getArtistTracks(name);
-    console.log(tracks);
 
     const s_tracks: TrackModal[] = tracks.map((track: any) => ({
       name: track.name,

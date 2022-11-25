@@ -1,16 +1,24 @@
-import { useEffect, useRef, useState } from "react"
+import { useEffect, FC, useState } from "react"
 import { useContractContext } from "../../context/BlockchainContext";
+import TrackModal from "../../modals/Tracks";
+
+declare const window: any;
 
 enum SearchCategory {
     Tracks = "Track",
     Artists = "Artist"
 }
 
-export default function Navbar() {
-    const searchInputRef = useRef(null);
+interface NavbarProps {
+    trackSetter: (tracks: TrackModal[]) => void
+}
+
+const Navbar: FC<NavbarProps> = ({ trackSetter }) => {
 
     const [dropdownCat, setDropdownCat] = useState<SearchCategory>(SearchCategory.Tracks);
-    const { connectWallet, isWalletConnected, getTracks, getTotalTracks } = useContractContext();
+    const [ethereum, setEthereum] = useState<any>();
+    const [searchInput, setSearchInput] = useState('');
+    const { connectWallet, isWalletConnected, getTracks, getTotalTracks, getArtistTracks } = useContractContext();
 
     const handleToggleDropdown = () => {
         switch (dropdownCat) {
@@ -26,11 +34,16 @@ export default function Navbar() {
     async function handleSearch(e) {
         e.preventDefault();
 
-        if (!searchInputRef || !window) return;
+        let tracks;
+        if (dropdownCat === SearchCategory.Tracks)
+            tracks = await getTracks!(ethereum, searchInput);
+        else
+            tracks = await getArtistTracks!(ethereum, searchInput);
 
-        const tracks = await getTracks(window.ethereum, searchInputRef.current?.value);
-
+        trackSetter(tracks);
     }
+
+    useEffect(() => setEthereum(window.ethereum), []);
 
     return (
         <nav className="container bg-white px-2 py-4 rounded-lg border-1 hover:shadow-none mx-auto mt-5 sticky top-0 duration-300">
@@ -56,15 +69,17 @@ export default function Navbar() {
                 </div>
 
 
-                <form className="robo flex items-center gap-4" role="search">
-                    <input className="input hover:w-64 focus:w-64 w-44" type="search" placeholder="Search..." aria-label="Search" ref={searchInputRef} />
+                <div className="robo flex items-center gap-4" role="search">
+                    <input className="input hover:w-64 focus:w-64 w-44" type="search" placeholder="Search..." aria-label="Search" value={searchInput} onChange={e => setSearchInput(e.target.value)} />
 
                     <button type="button" className="hover:(shadow-lg border-gray-400) px-4 py-2  border-1 rounded-lg duration-300" onClick={handleToggleDropdown}>{dropdownCat}</button>
 
                     <button className="submit-button" type="button" onClick={(e) => handleSearch(e)}>&#128269;</button>
-                </form>
+                </div>
 
             </div>
         </nav>
     )
 }
+
+export default Navbar;

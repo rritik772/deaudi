@@ -6,7 +6,8 @@ import { useContractContext } from './../context/BlockchainContext';
 
 declare const window: any;
 
-export default function Home() {
+export default function Home(props: any) {
+  console.log(props)
   const [tracks, setTracks] = useState<TrackModal[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [ethereum, setEthereum] = useState<any>(undefined);

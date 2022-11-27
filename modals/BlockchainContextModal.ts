@@ -18,6 +18,9 @@ export type BlockchainContextModal = {
   likeSong: ((ethereum: any, index: number) => Promise<boolean>) | undefined
   likedSong: ((ethereum: any) => Promise<number[]>) | undefined
   unlikeSong: ((ethereum: any, index: number) => Promise<boolean>) | undefined
+  tracks: TrackModal[],
+  setFetchedTracks: ((e: TrackModal[]) => void) | undefined
+  ethereum: any
 }
 
 export const BlockchainContextModalDefault: BlockchainContextModal = {
@@ -36,5 +39,8 @@ export const BlockchainContextModalDefault: BlockchainContextModal = {
   getAllTracks: undefined,
   likeSong: undefined,
   likedSong: undefined,
-  unlikeSong: undefined
+  unlikeSong: undefined,
+  tracks: [],
+  setFetchedTracks: undefined,
+  ethereum: undefined
 }

@@ -8,10 +8,9 @@ import TrackModal, { TrackModalDefault } from "../modals/Tracks";
 declare const window: any;
 
 export default function profile() {
-  const { connectWallet, getTracksAddedByArtist } = useContractContext();
+  const { connectWallet, getTracksAddedByArtist, tracks, setFetchedTracks } = useContractContext();
 
   const [ethereum, setEthereum] = useState<any>(undefined);
-  const [tracks, setTracks] = useState<TrackModal[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   async function getSongs() {
@@ -24,7 +23,7 @@ export default function profile() {
       return;
     }
 
-    setTracks(_tracks);
+    setFetchedTracks!(_tracks);
     setLoading(false);
   }
 

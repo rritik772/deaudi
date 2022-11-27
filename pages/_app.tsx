@@ -11,15 +11,6 @@ import { useEffect, useState } from 'react';
 import TrackModal from '../modals/Tracks';
 
 export default function App({ Component, pageProps }: AppProps) {
-  const [tracks, setTracks] = useState<TrackModal[]>([]);
-
-  useEffect(() => {
-    if (tracks.length > 0) {
-      console.log(tracks)
-      pageProps = { ...pageProps, tracks }
-    }
-  }, [tracks])
-
   return (
     <div>
       <ToastContainer
@@ -32,7 +23,7 @@ export default function App({ Component, pageProps }: AppProps) {
         theme="light"
       />
       <ContractProvider>
-        <Navbar trackSetter={(e) => setTracks(e)} />
+        <Navbar />
         <div className="mb-2" />
         <Component {...pageProps} />
       </ContractProvider>

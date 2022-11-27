@@ -1,4 +1,6 @@
 import { FC, useEffect, useRef, useState } from 'react';
+import { toast } from 'react-toastify';
+import { useContractContext } from '../../context/BlockchainContext';
 import { getNFT } from '../../lib/IPFSUtil';
 import TrackModal from '../../modals/Tracks';
 import Loading from '../Loading/Loading';
@@ -9,7 +11,9 @@ export interface SingleTracksProps {
 
 const SingleTracks: FC<SingleTracksProps> = ({ track }) => {
 
-  const { trackId, name, imgUrl, IPFSHash, description, timestamp, addedByName, album, artists } = track;
+  const { trackId, name, imgUrl, IPFSHash, description, trackIndex, timestamp, addedByName, album, artists } = track;
+
+  const { likeSong, likedSong, unlikeSong, ethereum } = useContractContext();
 
   const [infoToggle, setInfoToggle] = useState<boolean>(false);
   const [imgBlobUrl, setImgBlobUrl] = useState<string | undefined>();
@@ -17,6 +21,7 @@ const SingleTracks: FC<SingleTracksProps> = ({ track }) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [length, setLength] = useState<string>('--:--');
   const [loading, setLoading] = useState<boolean>(true);
+  const [isLiked, setIsLiked] = useState<boolean>(false);
 
   const audioPlayerRef = useRef(new Audio());
 
@@ -81,6 +86,20 @@ const SingleTracks: FC<SingleTracksProps> = ({ track }) => {
 
   }, [audioPlayerRef, audioPlayerRef.current?.duration, loading])
 
+  useEffect(() => {
+    const getLikedSongs = async () => {
+      const likedSongs = await likedSong!(ethereum);
+
+      if (likedSongs.includes(trackIndex))
+        setIsLiked(true);
+      else
+        setIsLiked(false);
+    }
+
+    if (likedSong !== undefined)
+      getLikedSongs()
+  }, [])
+
   if (loading)
     return (
       <div className="mb-3 shadow rounded-md p-4 mx-auto">
@@ -128,7 +147,22 @@ const SingleTracks: FC<SingleTracksProps> = ({ track }) => {
               audioPlayerRef != null &&
               <span>{length}</span>
             }
-            <span className="text-3xl hover:text-red-500 select-none cursor-pointer">&#10084;</span>
+            <span
+              className={`${isLiked ? 'text-red-500' : ''} text-3xl hover:scale-125 duration-500 transform hover:text-red-500 select-none cursor-pointer`}
+              onClick={() => {
+                setIsLiked(!isLiked)
+                if (isLiked && unlikeSong) {
+                  unlikeSong(ethereum, trackIndex)
+                  toast.success("Unliked Song");
+                }
+
+                if (!isLiked && likeSong) {
+                  likeSong(ethereum, trackIndex);
+                  toast.success("Liked song")
+                }
+
+              }}
+            >&#10084;</span>
             <span
               className="cursor-pointer py-2 px-3 border hover:(border-purple-400 shadow-md text-purple-500) duration-300 rounded-lg select-none"
               onClick={handlePlayer}

@@ -6,9 +6,9 @@ import { useContractContext } from './../context/BlockchainContext';
 
 declare const window: any;
 
-export default function Home(props: any) {
-  console.log(props)
-  const [tracks, setTracks] = useState<TrackModal[]>([]);
+export default function Home() {
+  const { tracks, setFetchedTracks } = useContractContext()
+
   const [loading, setLoading] = useState<boolean>(false);
   const [ethereum, setEthereum] = useState<any>(undefined);
 
@@ -23,7 +23,7 @@ export default function Home(props: any) {
       return;
     }
 
-    setTracks(_tracks);
+    setFetchedTracks!(_tracks);
     setLoading(false);
   }
 

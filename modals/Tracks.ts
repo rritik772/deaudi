@@ -1,7 +1,7 @@
 export default interface TrackModal {
   name: string;
   trackId: number;
-  length: number;
+  trackIndex: number;
   imgUrl: string;
   IPFSHash: string;
   description: string;
@@ -18,7 +18,7 @@ export default interface TrackModal {
 export const TrackModalDefault: TrackModal = {
   name: '',
   trackId: 0,
-  length: 0,
+  trackIndex: 0,
   imgUrl: '',
   IPFSHash: '',
   description: '',

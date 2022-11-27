@@ -9,8 +9,7 @@ const createProfileContract = (ethereum: any): ethers.Contract => {
 
   const trackContract = new ethers.Contract(
     // process.env.PROFILECONTRACTADDRESS || '',
-    // "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
-    "0xDc64a140Aa3E981100a9becA4E685f962f0cF6C9",
+    "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
     ProfileABI,
     signer
   );
@@ -98,9 +97,10 @@ export async function likeSong(ethereum: any, index: number): Promise<boolean> {
 export async function likedSong(ethereum: any): Promise<number[]> {
   try {
     const contract = createProfileContract(ethereum);
-    const liked = await contract.likedSong();
+    const liked = await contract.likedSongs();
 
-    return liked;
+    const likes = liked.map((item: any) => (parseInt(item._hex, 16)))
+    return likes;
   } catch (err) {
     console.error(err);
     return [];

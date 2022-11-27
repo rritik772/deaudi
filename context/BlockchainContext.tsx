@@ -6,6 +6,7 @@ import { BlockchainContextModal, BlockchainContextModalDefault } from "../modals
 
 import { getTracks, getTotalTracks, addTrack, getArtistTracks, getTracksAddedByArtist, getAllTracks } from './tracks_contract';
 import { createProfile, getProfile, createNewTrack, isUsernameExisted, changeDescription, likeSong, likedSong, unlikeSong } from './profile_contract';
+import TrackModal from "../modals/Tracks";
 
 declare var window: any;
 
@@ -20,6 +21,7 @@ export const ContractProvider = ({ children }: { children: ReactNode }) => {
   const [account, setAccount] = useState();
   const [ethereum, setEthereum] = useState<any>();
   const [isWalletConnected, setIsWalletConnected] = useState<boolean>(false);
+  const [tracks, setTracks] = useState<TrackModal[]>([]);
 
   const connectWallet = async () => {
     try {
@@ -50,6 +52,10 @@ export const ContractProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
+  const setFetchedTracks = (e: TrackModal[]) => {
+    setTracks(e);
+  }
+
   useEffect(() => {
     setEthereum(window.ethereum);
   }, [])
@@ -77,7 +83,10 @@ export const ContractProvider = ({ children }: { children: ReactNode }) => {
         getAllTracks,
         likedSong,
         unlikeSong,
-        likeSong
+        likeSong,
+        tracks,
+        setFetchedTracks,
+        ethereum
       }}
     >
       {children}

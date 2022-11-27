@@ -1,6 +1,6 @@
 import { useEffect, FC, useState } from "react"
+import { toast } from "react-toastify";
 import { useContractContext } from "../../context/BlockchainContext";
-import TrackModal from "../../modals/Tracks";
 
 declare const window: any;
 
@@ -9,16 +9,12 @@ enum SearchCategory {
     Artists = "Artist"
 }
 
-interface NavbarProps {
-    trackSetter: (tracks: TrackModal[]) => void
-}
-
-const Navbar: FC<NavbarProps> = ({ trackSetter }) => {
+const Navbar = () => {
 
     const [dropdownCat, setDropdownCat] = useState<SearchCategory>(SearchCategory.Tracks);
     const [ethereum, setEthereum] = useState<any>();
     const [searchInput, setSearchInput] = useState('');
-    const { connectWallet, isWalletConnected, getTracks, getTotalTracks, getArtistTracks } = useContractContext();
+    const { connectWallet, isWalletConnected, getTracks, setFetchedTracks, getArtistTracks } = useContractContext();
 
     const handleToggleDropdown = () => {
         switch (dropdownCat) {
@@ -31,7 +27,7 @@ const Navbar: FC<NavbarProps> = ({ trackSetter }) => {
         }
     }
 
-    async function handleSearch(e) {
+    async function handleSearch(e: any) {
         e.preventDefault();
 
         let tracks;
@@ -40,7 +36,9 @@ const Navbar: FC<NavbarProps> = ({ trackSetter }) => {
         else
             tracks = await getArtistTracks!(ethereum, searchInput);
 
-        trackSetter(tracks);
+        if (tracks.length === 0) toast.info("No songs found");
+
+        setFetchedTracks!(tracks);
     }
 
     useEffect(() => setEthereum(window.ethereum), []);

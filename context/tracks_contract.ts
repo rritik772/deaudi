@@ -10,7 +10,7 @@ const createTrackContract = (ethereum: any): ethers.Contract => {
   const trackContract = new ethers.Contract(
     // process.env.TRACKSCONTRACTADDRESS || '',
     // "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
-    "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
+    "0x5FbDB2315678afecb367f032d93F642f64180aa3",
     TracksABI,
     signer
   );
@@ -47,7 +47,7 @@ export async function getTracks(ethereum: any, name: string): Promise<TrackModal
     const s_tracks: TrackModal[] = tracks.map((track: any) => ({
       name: track.name,
       trackId: track.trackId,
-      length: track.length,
+      trackIndex: parseInt(track._length._hex, 16),
       IPFSHash: track.IPFSHash,
       description: track.description,
       imgUrl: track.imgUrl,
@@ -76,7 +76,7 @@ export async function getAllTracks(ethereum: any): Promise<TrackModal[]> {
     const s_tracks: TrackModal[] = tracks.map((track: any) => ({
       name: track.name,
       trackId: track.trackId,
-      length: track.length,
+      trackIndex: parseInt(track._length._hex, 16),
       IPFSHash: track.IPFSHash,
       description: track.description,
       imgUrl: track.imgUrl,
@@ -90,6 +90,7 @@ export async function getAllTracks(ethereum: any): Promise<TrackModal[]> {
       isDeleted: track.isDeleted,
 
     }))
+
     return s_tracks;
   } catch (err) {
     console.error(err);
@@ -105,7 +106,7 @@ export async function getArtistTracks(ethereum: any, name: string): Promise<Trac
     const s_tracks: TrackModal[] = tracks.map((track: any) => ({
       name: track.name,
       trackId: track.trackId,
-      length: track.length,
+      trackIndex: parseInt(track._length._hex, 16),
       IPFSHash: track.IPFSHash,
       description: track.description,
       imgUrl: track.imgUrl,
